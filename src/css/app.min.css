@@ -1,1 +1,1 @@
-h1{color:red}
+@import url(https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap);body,html{margin:0;padding:0;font-family:'Roboto Condensed',sans-serif;font-size:16px;font-weight:400}.container{max-width:1440px;margin:0 auto}h1{color:red}.timer__inner{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}

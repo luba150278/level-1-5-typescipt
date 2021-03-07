@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var greet_1 = require("./greet");
 function showHello(divName, name) {
     var elt = document.getElementById(divName);
-    elt.innerText = greet_1.sayHello(name);
+    if (elt != null) elt.innerText = greet_1.sayHello(name);
+    console.log('YYYY');
 }
 showHello("greeting", "TypeScript");
-console.log('YYYY');
 
 },{"./greet":1}]},{},[2])
 
