@@ -5675,7 +5675,7 @@
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var moment = require("moment");
-//import * as moment-timer from "moment-timer/lib/";
+// import * as moment-timer from "moment-timer/lib/";
 var buttDown = document.getElementById('timer-manager-down');
 var buttUp = document.getElementById('timer-manager-up');
 var buttStart = document.getElementById('timer-start');
@@ -5683,21 +5683,14 @@ var timerInstr = document.getElementById('timer-instruction');
 var timer = document.getElementById('time-current-val');
 var timerVal = Number(timer.innerHTML);
 buttDown.addEventListener('click', function () {
-    if (timerVal != 0) {
-        timerVal--;
+    if (timerVal !== 0) {
+        timerVal -= 1;
         timer.innerHTML = String(timerVal);
     }
 });
 buttUp.addEventListener('click', function () {
-    timerVal++;
+    timerVal += 1;
     timer.innerHTML = String(timerVal);
-});
-buttStart.addEventListener('click', function () {
-    if (timerVal != 0) {
-        buttStart.classList.add('hidden');
-        timerInstr.innerHTML = 'Осталось';
-        startTimer(timerVal * 60);
-    }
 });
 function startTimer(time) {
     timer.innerHTML = moment.unix(time).format('mm:ss');
@@ -5711,6 +5704,13 @@ function startTimer(time) {
         return startTimer(time - 1);
     }, 1000);
 }
+buttStart.addEventListener('click', function () {
+    if (timerVal !== 0) {
+        buttStart.classList.add('hidden');
+        timerInstr.innerHTML = 'Осталось';
+        startTimer(timerVal * 60);
+    }
+});
 
 },{"moment":1}]},{},[2])
 

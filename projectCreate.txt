@@ -1,0 +1,32 @@
+npm init     //заполнить поля или оставить как есть
+npm i gulp --save-dev
+npm i browser-sync --save-dev
+npm i gulp-concat gulp-uglify-es --save-dev
+npm i --save-dev gulp-sass gulp-less gulp-autoprefixer gulp-clean-css
+npm i --save-dev gulp-imagemin gulp-newer del
+//typecsript
+npm i --save-dev gulp-cli
+npm i --save-dev typescript gulp-typescript
+npm i --save-dev browserify tsify vinyl-source-stream
+npm i --save-dev watchify fancy-log
+npm i --save-dev gulp-uglify vinyl-buffer gulp-sourcemaps
+npm i --save-dev babelify@8 babel-core babel-preset-es2015 vinyl-buffer gulp-sourcemaps
+npm i @types/node --save
+//ESLINT, prettier, husky
+npm i eslint --save-dev
+npx eslint --init
+echo {}> .eslintignore
+//prettier
+npm install --save-dev --save-exact prettier
+echo {}> .prettierrc.json
+echo {}> .prettierignore 
+//husky
+npm install husky --save-dev
+npx husky install
+//Дальше по корректируем json, ignore файлы, создаем gulpfile.js Все примеры файлов в этой папке работающие,
+gulpfile.js опирается на данную структуры проекта
+Пробуем запустить gulp. Просто в консоль вводим gulp и сайт откроется в браузере.
+Сборка проекта:
+gulp build
+
+!!!Если при запуске gulp выйдут ошибки - скорее всего скорее всего не устанволен какой-то модуль, в сообщении будет виден какой
