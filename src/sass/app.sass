@@ -1,20 +1,55 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap')
 $decorColor: #2196f3
 $textColor: #343733
+$hoverColor: #ee67c8
+$successColor: #3f9955
 @mixin mgpd
   margin: 0
   padding: 0
 html, body
   @include mgpd
   font-family: 'Roboto Condensed', sans-serif
-  font-size: 16px
+  font-size: 24px
   font-weight: 400
+  color: $textColor
 .container
-  max-width: 1440px
+  max-width: 400px
   margin: 0 auto
 h1
-  color: red
+  color: $decorColor
+  font-weight: 700
 .timer__inner
+  width: 100%
   display: flex
+  flex-direction: column
   justify-content: center
   align-items: center
+.main-timer-panel
+  width: 100%
+  display: flex
+  column-count: 3
+  justify-content: space-between
+  margin-bottom: 10px
+  align-items: center
+button
+  color: white
+  background: $decorColor
+  border-radius: 4px
+  border: none
+  padding: 0 10px
+  font-weight: 700
+  height: 40px
+  min-width: 60px
+  font-size: 16px
+  &:hover
+    cursor: pointer
+    background: $hoverColor
+.timer-start
+  background: $successColor
+  min-width: 160px
+.time-current-val
+  font-size: 36px
+  font-weight: 700
+.timer-instruction
+  font-weight: 500
+
