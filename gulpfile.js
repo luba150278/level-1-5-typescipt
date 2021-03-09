@@ -27,134 +27,120 @@ function createTS() {
 }
 
 
-// Определяем переменную "preprocessor"
+// define "preprocessor" var
 let preprocessor = 'sass';
 
-// Определяем константы Gulp
+// define Gulp const
 const { src, dest, parallel, series, watch } = require('gulp');
-// Подключаем Browsersync
+// use Browsersync
 let browserSync = require('browser-sync').create();
 
-// Подключаем gulp-concat
+// gulp-concat -> union some file in one
 const concat = require('gulp-concat');
 
-// Подключаем gulp-uglify-es
+// gulp-uglify-es -> compress
 const uglify = require('gulp-uglify-es').default;
 
-// Подключаем модули gulp-sass и gulp-less
+// style modules gulp-sass и gulp-less
 const sass = require('gulp-sass');
 const less = require('gulp-less');
 
-// Подключаем Autoprefixer
+// Autoprefixer
 const autoprefixer = require('gulp-autoprefixer');
 
-// Подключаем модуль gulp-clean-css
+//gulp-clean-css
 const cleancss = require('gulp-clean-css');
 
-// Подключаем gulp-imagemin для работы с изображениями
+// use gulp-imagemin to compress images
 const imagemin = require('gulp-imagemin');
 
-// Подключаем модуль gulp-newer
+//gulp-newer
 const newer = require('gulp-newer');
 
-// Подключаем модуль del
+//del
 const del = require('del');
 
-// Определяем логику работы Browsersync
+//Browsersync
 function browsersync() {
-  browserSync.init({ // Инициализация Browsersync
-    server: { baseDir: 'src/' }, // Указываем папку сервера
-    notify: false, // Отключаем уведомления
-    online: true // Режим работы: true или false
+  browserSync.init({
+    server: { baseDir: 'src/' }, // server field
+    notify: false, // don't show
+    online: true
   })
 }
 
+//Work with scripts
 function scripts() {
 
-  return src([ // Берём файлы из источников
-    //'node_modules/jquery/dist/jquery.min.js', // Пример подключения библиотеки
+  return src([
+    //'node_modules/jquery/dist/jquery.min.js', // examples
     //'node_modules/masonry-layout/dist/masonry.pkgd.min.js', 
     //'node_modules/owl.carousel/dist/owl.carousel.min.js',    
-    'src/js/bundle.js', // Пользовательские скрипты, использующие библиотеку, должны быть подключены в конце   
+    'src/js/bundle.js', // user's scripts   
   ])
-    .pipe(concat('bundle.min.js')) // Конкатенируем в один файл
-    .pipe(uglify()) // Сжимаем JavaScript
-    .pipe(dest('src/js')) // Выгружаем готовый файл в папку назначения
-    .pipe(browserSync.stream()) // Триггерим Browsersync для обновления страницы
+    .pipe(concat('bundle.min.js')) // union files
+    .pipe(uglify()) // compress
+    .pipe(dest('src/js')) // production version field
+    .pipe(browserSync.stream()) // check changes and update page
 }
-
+//Work with styles
 function styles() {
   return src([
     'src/' + preprocessor + '/app.' + preprocessor + ''
-  ]) // Выбираем источник: "app/sass/main.sass" или "app/less/main.less"
-    .pipe(eval(preprocessor)()) // Преобразуем значение переменной "preprocessor" в функцию
-    .pipe(concat('app.min.css')) // Конкатенируем в файл app.min.js
-    .pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true })) // Создадим префиксы с помощью Autoprefixer
-    .pipe(cleancss({ level: { 1: { specialComments: 0 } }/* , format: 'beautify' */ })) // Минифицируем стили
-    .pipe(dest('src/css')) // Выгрузим результат в папку "app/css/"
-    .pipe(browserSync.stream()) // Сделаем инъекцию в браузер
+  ])
+    .pipe(eval(preprocessor)())
+    .pipe(concat('app.min.css'))
+    .pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true }))
+    .pipe(cleancss({ level: { 1: { specialComments: 0 } }/* , format: 'beautify' */ }))
+    .pipe(dest('src/css'))
+    .pipe(browserSync.stream())
 }
-
+//work with images
 function images() {
-  return src('src/images/src/**/*') // Берём все изображения из папки источника
-    .pipe(newer('src/images/dest/')) // Проверяем, было ли изменено (сжато) изображение ранее
-    .pipe(imagemin()) // Сжимаем и оптимизируем изображеня
-    .pipe(dest('src/images/dest/')) // Выгружаем оптимизированные изображения в папку назначения
+  return src('src/images/src/**/*')
+    .pipe(newer('src/images/dest/'))
+    .pipe(imagemin())
+    .pipe(dest('src/images/dest/'))
 }
-
+//delete images from /dest
 function cleanimg() {
-  return del('src/images/dest/**/*', { force: true }) // Удаляем всё содержимое папки "app/images/dest/"
+  return del('src/images/dest/**/*', { force: true })
 }
 
+//product version
 function buildcopy() {
-  return src([ // Выбираем нужные файлы
+  return src([
     'src/css/**/*min.css',
     'src/js/**/*.min.js',
     'src/images/dest/**/*',
     //'app/owl/**/*',
     'src/**/*.html',
-  ], { base: 'src' }) // Параметр "base" сохраняет структуру проекта при копировании
-    .pipe(dest('dist')) // Выгружаем в папку с финальной сборкой
+  ], { base: 'src' })
+    .pipe(dest('dist'))
 }
 
 function cleandist() {
-  return del('dist/**/*', { force: true }) // Удаляем всё содержимое папки "dist/"
+  return del('dist/**/*', { force: true })
 }
 
+//watched files
 function startwatch() {
- // Выбираем все файлы JS в проекте, а затем исключим с суффиксом .min.js
   watch(['src/**/*.ts', '!src/**/*.min.ts'], createTS);
-  // Выбираем все файлы JS в проекте, а затем исключим с суффиксом .min.js
   watch(['src/**/*.js', 'src/**/*.ts', '!src/**/*.min.js'], scripts);
-
-  // Мониторим файлы препроцессора на изменения
   watch('src/**/' + preprocessor + '/**/*', styles);
-
-  // Мониторим файлы HTML на изменения
   watch('src/**/*.html').on('change', browserSync.reload);
-
-  // Мониторим папку-источник изображений и выполняем images(), если есть изменения
   watch('src/images/src/**/*', images);
-
 }
 
-// Экспортируем функцию browsersync() как таск browsersync. Значение после знака = это имеющаяся функция.
+//Export
 exports.browsersync = browsersync;
 exports.createTS = createTS;
-// Экспортируем функцию scripts() в таск scripts
 exports.scripts = scripts;
-
-// Экспортируем функцию styles() в таск styles
 exports.styles = styles;
-
-// Экспорт функции images() в таск images
 exports.images = images;
-
-// Экспортируем функцию cleanimg() как таск cleanimg
 exports.cleanimg = cleanimg;
 
-// Создаём новый таск "build", который последовательно выполняет нужные операции
+//Product
 exports.build = series(cleandist, styles, scripts, images, buildcopy);
-
-// Экспортируем дефолтный таск с нужным набором функций
+//current
 exports.default = parallel(createTS, styles, scripts, browsersync, startwatch);
